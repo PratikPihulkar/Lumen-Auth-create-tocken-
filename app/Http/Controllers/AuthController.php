@@ -73,10 +73,11 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60, // Convert minutes to seconds
-            // 'refresh_token' => auth()->refresh()
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'refresh_token' => auth()->refresh()
         ]);
     }
+
 
     public function checkMe()
     {

@@ -2,34 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Auth\Authenticatable;
-// use Tymon\JWTAuth\Contracts\JWTSubject;
-// use Illuminate\Database\Eloquent\Model;
-
-
-// class User extends Model implements JWTSubject
-// {
-//     use Authenticatable;
-
-//     protected $fillable = ['name', 'email', 'password'];
-
-//     // Implement JWTSubject methods
-
-//     // Return the identifier for JWT (usually user ID)
-//     public function getJWTIdentifier()
-//     {
-//         return $this->getKey();
-//     }
-
-//     // Return key-value array with custom JWT claims
-//     public function getJWTCustomClaims()
-//     {
-//         return [];
-//     }
-// }
-
-
-
 
 // namespace App\Models;
 
@@ -83,7 +55,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     // Return key-value array with custom JWT claims
     public function getJWTCustomClaims()
-    {
+    { 
         return [];
     }
 }
