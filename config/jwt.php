@@ -229,7 +229,6 @@ return [
     | on every request.
     |
     | Set grace period in seconds to prevent parallel request failure.
-    |
     */
 
     'blacklist_grace_period' => env('JWT_BLACKLIST_GRACE_PERIOD', 0),

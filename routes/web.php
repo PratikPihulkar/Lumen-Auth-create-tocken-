@@ -19,7 +19,6 @@ $router->get('/', function () use ($router) {
 
 $router->post('register', 'AuthController@register');
 $router->post('login', 'AuthController@login');
-$router->post('refresh-token', 'AuthController@refreshToken');
 $router->post('logout', 'AuthController@logout');
 
 $router->group(['middleware' => 'auth:api'], function() use ($router) {
@@ -27,6 +26,7 @@ $router->group(['middleware' => 'auth:api'], function() use ($router) {
         return response()->json(['message' => 'Access granted!']);
     });
     $router->post('checkMe', 'AuthController@checkMe');
+    $router->post('refresh-token', 'AuthController@refreshToken');
 });
 
 $router->group([

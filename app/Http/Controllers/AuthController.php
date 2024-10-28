@@ -11,7 +11,8 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
-    // Register a new user
+    
+    // REGISTER USER
     public function register(Request $request)
     { 
         $this->validate($request, [
@@ -30,34 +31,38 @@ class AuthController extends Controller
     }
 
 
- public function login(Request $request)
-{
-    $this->validate($request, [
-        'email' => 'required|string|email',
-        'password' => 'required|string|min:6',
-    ]);
+    public function login(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:6',
+        ]);
 
-    $credentials = $request->only(['email', 'password']);
+        $credentials = $request->only(['email', 'password']);
 
-    try {
-        // if (!$token = JWTAuth::attempt($credentials)) {
-        if (!$token = auth()->attempt($credentials)) {
-            // Invalid credentials
-            return response()->json(['error' => 'Invalid credentials'], 401);
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {     //token not generated
+                
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
+        } catch (JWTException $e) {               //ERRO
+            
+            return response()->json(['error' => 'Could not create token'], 500);
         }
-    } catch (JWTException $e) {
-        // If there's an error while trying to create the token
-        return response()->json(['error' => 'Could not create token'], 500);
-    }
 
-    // If successful, return the token details
-    return $this->respondWithToken($token);
-}
+        // If successful, return the token details
+        return $this->respondWithToken($token);
+    }
 
     // Refresh JWT token
     public function refreshToken()
     {
-        return $this->respondWithToken(JWTAuth::refresh());
+        // return JWTAuth::refresh();
+        return response()->json([
+            'access_token' => auth()->refresh(),
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+        ]);
     }
 
     // Logout user
@@ -74,14 +79,19 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => JWTAuth::factory()->getTTL() * 60,
-            'refresh_token' => auth()->refresh()
         ]);
     }
 
+    // 'refresh_token' => JWTAuth::refresh()
 
     public function checkMe()
     {
         return response()->json(auth()->user());
+    }
+    
+    public function refresh()
+    {
+        return response()->json(auth()->refresh());
     }
 
 }
